@@ -1,0 +1,12 @@
+{
+  "name": "GalacticTracker",
+  "displayName": "GalacticTracker",
+  "expo": {
+    "name": "GalacticTracker",
+    "slug": "GalacticTracker",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
