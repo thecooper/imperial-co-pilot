@@ -1,0 +1,1 @@
+export type TechType = "biotic" | "warfare" | "propulsion" | "cybernetic";
