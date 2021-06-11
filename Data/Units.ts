@@ -48,7 +48,7 @@ export const BASE_UNITS: Unit[] = [
 	{
 		name: "Warsun",
 		cost: 12,
-		combat: { hitOn: 3, rolls: 3 },
+		combat: { hitsOn: 3, rolls: 3 },
 		move: 1,
 		capacity: 3,
 		abilities: [{

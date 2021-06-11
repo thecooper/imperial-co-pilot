@@ -13,9 +13,11 @@ import { SCREEN_WIDTH, SPACING } from "../spacing";
 import { Influence, Resource } from "./PlanetValues";
 import { Section } from "./Section";
 import { SectionGroup } from "./SectionGroup";
-import { SectionHeader } from "./SectionHeader";
 import { SectionSubheader } from "./SectionSubheader";
 import { TechIcon } from "./TechIcon";
+import { Unit } from "./Unit";
+import { UnitAbility } from "./UnitAbility";
+import { UnitDisplayBox } from "./UnitDisplayBox";
 
 function IndentedText({
   style,
@@ -33,10 +35,15 @@ export function FactionSheet({ faction }: { faction: Faction }) {
     startingUnits,
     planets,
     abilities,
-    leaders,
     factionTechs,
+    factionUnits,
     promissoryNotes,
+    mech,
+    flagship,
+    leaders,
   } = faction;
+
+  const filteredFactionTechs = factionTechs.filter((x) => x !== undefined);
 
   return (
     <ScrollView
@@ -46,7 +53,7 @@ export function FactionSheet({ faction }: { faction: Faction }) {
         backgroundColor: color,
         paddingHorizontal: SPACING,
       }}
-      contentContainerStyle={{ paddingBottom: SPACING }}
+      contentContainerStyle={{ paddingBottom: SPACING * 6 }}
     >
       <Text
         style={{
@@ -60,8 +67,7 @@ export function FactionSheet({ faction }: { faction: Faction }) {
         {name}
       </Text>
 
-      <SectionHeader>General</SectionHeader>
-      <SectionGroup>
+      <SectionGroup title="General">
         <Section>
           <View
             style={{
@@ -87,7 +93,7 @@ export function FactionSheet({ faction }: { faction: Faction }) {
                   style={{
                     fontSize: 14,
                     textAlign: "left",
-                    color: getTechColor(tech.type),
+                    color: tech.type ? getTechColor(tech.type) : "black",
                   }}
                 >
                   {tech.name}
@@ -166,32 +172,25 @@ export function FactionSheet({ faction }: { faction: Faction }) {
       </SectionGroup>
 
       {promissoryNotes && promissoryNotes.length >= 1 ? (
-        <React.Fragment>
-          <SectionHeader>Promissory Note</SectionHeader>
-          <SectionGroup>
-            {promissoryNotes.map((x) => (
-              <Section>
-                <SectionSubheader>{x.name}</SectionSubheader>
-                <IndentedText>{x.description}</IndentedText>
-              </Section>
-            ))}
-          </SectionGroup>
-        </React.Fragment>
+        <SectionGroup title="Promissory Note">
+          {promissoryNotes.map((x) => (
+            <Section title={x.name}>
+              <IndentedText>{x.description}</IndentedText>
+            </Section>
+          ))}
+        </SectionGroup>
       ) : null}
 
-      <SectionHeader>Faction Abilities</SectionHeader>
-      <SectionGroup>
-        {abilities.map((ability, idx) => (
-          <Section>
-            <SectionSubheader>{ability.name.toUpperCase()}</SectionSubheader>
+      <SectionGroup title="Faction Abilities">
+        {abilities.map((ability) => (
+          <Section title={ability.name.toUpperCase()}>
             <IndentedText>{ability.description}</IndentedText>
           </Section>
         ))}
       </SectionGroup>
 
-      {factionTechs.length > 0 ? (
-        <React.Fragment>
-          <SectionHeader>Faction Techs</SectionHeader>
+      {filteredFactionTechs.length > 0 ? (
+        <SectionGroup title="Faction Techs">
           {factionTechs.map((tech) => (
             <Section>
               <View
@@ -203,7 +202,9 @@ export function FactionSheet({ faction }: { faction: Faction }) {
                   marginBottom: SPACING,
                 }}
               >
-                <TechIcon type={tech.type} style={{ marginRight: SPACING }} />
+                {tech.type ? (
+                  <TechIcon type={tech.type} style={{ marginRight: SPACING }} />
+                ) : null}
                 <SectionSubheader
                   style={{
                     marginBottom: 0,
@@ -213,43 +214,107 @@ export function FactionSheet({ faction }: { faction: Faction }) {
                 </SectionSubheader>
               </View>
               <IndentedText>{tech.description}</IndentedText>
-              <View
-                style={{
-                  marginTop: SPACING,
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                }}
-              >
-                <Text>Pre-Requisites: </Text>
-                {Array.from({ length: tech.preRequisites })
-                  .fill(0)
-                  .map((_, idx) => (
-                    <TechIcon
-                      key={idx}
-                      style={{ marginHorizontal: SPACING / 2 }}
-                      type={tech.type}
-                    />
-                  ))}
-              </View>
+              {tech.type ? (
+                <View
+                  style={{
+                    marginTop: SPACING,
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text>Pre-Requisites: </Text>
+                  {Array.from({ length: tech.preRequisites })
+                    .fill(0)
+                    .map((_, idx) => (
+                      <TechIcon
+                        key={idx}
+                        style={{ marginHorizontal: SPACING / 2 }}
+                        type={tech.type}
+                      />
+                    ))}
+                </View>
+              ) : null}
             </Section>
           ))}
-        </React.Fragment>
+        </SectionGroup>
       ) : null}
 
-      <SectionHeader>Leaders</SectionHeader>
-      <SectionGroup>
-        {leaders.agent.map((x, idx) => (
-          <Section>
-            <SectionSubheader>Agent - {x.name}</SectionSubheader>
+      {factionUnits ? (
+        <SectionGroup title="Faction Units">
+          <Section title={factionUnits.first.base.name}>
+            <Unit unit={factionUnits.first.base} />
+          </Section>
+          <Section title={factionUnits.first.upgrade.name}>
+            <Unit unit={factionUnits.first.upgrade} />
+          </Section>
+          {factionUnits.second ? (
+            <Section title={factionUnits.second.base.name}>
+              <Unit unit={factionUnits.second.base} />
+            </Section>
+          ) : null}
+          {factionUnits.second ? (
+            <Section title={factionUnits.second.upgrade.name}>
+              <Unit unit={factionUnits.second.upgrade} />
+            </Section>
+          ) : null}
+        </SectionGroup>
+      ) : null}
+
+      {mech ? (
+        <SectionGroup title="Mech">
+          <Section title={mech.name}>
+            <Text style={{ marginBottom: SPACING }}>{mech.description}</Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              {mech.abilities.map((x) => (
+                <UnitAbility
+                  style={{ fontWeight: "bold", marginHorizontal: SPACING / 2 }}
+                  ability={x}
+                />
+              ))}
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginLeft: -SPACING,
+                marginTop: SPACING,
+              }}
+            >
+              <UnitDisplayBox
+                style={{ borderRightColor: "#ccc", borderRightWidth: 1 }}
+                title="Cost"
+                unit={mech}
+              />
+              <UnitDisplayBox title="Combat" unit={mech} />
+            </View>
+          </Section>
+        </SectionGroup>
+      ) : null}
+
+      {flagship ? (
+        <SectionGroup title="Flagship">
+          <Section title={flagship.name}>
+            <Unit unit={flagship} />
+          </Section>
+        </SectionGroup>
+      ) : null}
+
+      <SectionGroup title="Leaders">
+        {leaders.agent.map((x) => (
+          <Section title={`Agent - ${x.name}`}>
             <IndentedText>{x.description}</IndentedText>
           </Section>
         ))}
-        <Section>
-          <SectionSubheader>
-            Commander - {leaders.commander.name}
-          </SectionSubheader>
+        <Section title={`Commander - ${leaders.commander.name}`}>
           <Text
             style={{
               backgroundColor: "#ccc",
@@ -262,8 +327,10 @@ export function FactionSheet({ faction }: { faction: Faction }) {
           </Text>
           <IndentedText>{leaders.commander.description}</IndentedText>
         </Section>
-        <Section>
-          <SectionSubheader>Hero - {leaders.hero.name}</SectionSubheader>
+        <Section title={`Hero - ${leaders.hero.name}`}>
+          <IndentedText style={{ marginBottom: SPACING }}>
+            <SectionSubheader>{leaders.hero.abilityName}</SectionSubheader>
+          </IndentedText>
           <IndentedText>{leaders.hero.description}</IndentedText>
         </Section>
       </SectionGroup>

@@ -33,14 +33,20 @@ export interface Faction {
 		},
 		hero: {
 			name: string;
+			abilityName: string;
 			description: string;
 		}
 	};
-	factionUnits: FactionUnit[];
+	factionUnits?: {
+		first: FactionUnit;
+		second?: FactionUnit;
+	};
 	factionTechs: Technology[];
 	promissoryNotes?: {
 		name: string;
-		description: string[];
+		description: string;
 	}[];
+	mech?: Unit;
+	flagship?: Unit;
 	color: string;
 }

@@ -21,4 +21,16 @@ export const PLANETS: Planet[] = [
     influence: 0,
     isLegendary: false,
   },
+  {
+    name: "Tren'lak",
+    resources: 1,
+    influence: 0,
+    isLegendary: false,
+  },
+  {
+    name: "Quinarra",
+    resources: 3,
+    influence: 1,
+    isLegendary: false,
+  },
 ];

@@ -1,10 +1,15 @@
 import React from "react";
 import { View } from "react-native";
 import { SPACING } from "../spacing";
+import { SectionSubheader } from "./SectionSubheader";
 
 export function Section({
-  style, children, ...otherProps
+  title,
+  style,
+  children,
+  ...otherProps
 }: React.PropsWithChildren<{
+  title?: string;
   style?: any;
 }>) {
   return (
@@ -17,6 +22,7 @@ export function Section({
       }}
       {...otherProps}
     >
+      {title ? <SectionSubheader>{title}</SectionSubheader> : null}
       {children}
     </View>
   );
