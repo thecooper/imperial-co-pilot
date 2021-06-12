@@ -1,41 +1,52 @@
-import React, { useEffect, useRef, useState } from "react";
-import { View, FlatList, Text, Button, Pressable, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  View,
+  FlatList,
+  Text,
+  Pressable,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from "react-native";
 import { Faction } from "../Models/Faction";
 import { SCREEN_WIDTH, SPACING } from "../spacing";
-import { FactionSheet } from "./FactionSheet";
+import { FactionSheet, IHeaderOffsets } from "./FactionSheet";
 
 export function FactionSelector({ factions }: { factions: Faction[] }) {
   const [factionIndex, setFactionIndex] = useState<number>(0);
-  const flatListRef = useRef(null);
 
   const selectFaction = () => {
     console.log(factions[factionIndex].name);
   };
 
-  const updateSelectedFaction = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const updateSelectedFaction = (
+    e: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
     const xOffset = e.nativeEvent.contentOffset.x;
 
     const minIndex = Math.floor(xOffset / SCREEN_WIDTH);
     const roundedExtra = Math.round((xOffset % SCREEN_WIDTH) / SCREEN_WIDTH);
     const updatedIndex = minIndex + roundedExtra;
 
-    if(updatedIndex !== factionIndex && updatedIndex >= 0) {
+    if (updatedIndex !== factionIndex && updatedIndex >= 0) {
       setFactionIndex(minIndex + roundedExtra);
     }
-  }
+  };
 
   return (
     <View>
       <FlatList
         data={factions}
         keyExtractor={(faction) => faction.name}
-        renderItem={(faction) => <FactionSheet faction={faction.item} />}
+        renderItem={({ item: faction }) => (
+          <FactionSheet
+            faction={faction}
+          />
+        )}
         horizontal
         showsHorizontalScrollIndicator={false}
         snapToInterval={SCREEN_WIDTH}
         onScroll={updateSelectedFaction}
         alwaysBounceHorizontal={false}
-        ref={flatListRef}
         disableIntervalMomentum={true}
       />
       <View
