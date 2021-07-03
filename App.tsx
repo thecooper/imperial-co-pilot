@@ -5,7 +5,7 @@ import { FACTIONS } from './Data/Factions';
 
 export default function App() {
   return (
-    <FactionSelector factions={FACTIONS} />
+    <FactionSelector />
   );
 }
 
