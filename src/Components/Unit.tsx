@@ -3,7 +3,7 @@ import {
   Text,
   View
 } from "react-native";
-import { SPACING } from "../spacing";
+import { SPACING } from "../../spacing";
 import { UnitAbility } from "./UnitAbility";
 import { UnitDisplayBox } from "./UnitDisplayBox";
 import { Unit as UnitModel } from "../Models/Unit";

@@ -7,7 +7,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from "react-native";
-import { SCREEN_WIDTH, SPACING } from "../spacing";
+import { SCREEN_WIDTH, SPACING } from "../../spacing";
 
 export function PanningSelector<T>({
   items,

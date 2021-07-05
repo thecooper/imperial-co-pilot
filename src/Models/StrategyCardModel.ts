@@ -1,4 +1,4 @@
-export interface Strategy {
+export interface StrategyCardModel {
 	number: number;
 	name: string;
 	primary: string[];

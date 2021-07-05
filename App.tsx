@@ -1,19 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { FactionSelector } from './Components/FactionSelector';
-import { FACTIONS } from './Data/Factions';
+import React from "react";
+import { FactionSelector } from "./src/Components/FactionSelector";
+import { StrategyCardSelector } from "./src/Components/StragegyCardSelector";
 
 export default function App() {
-  return (
-    <FactionSelector />
-  );
+  return <StrategyCardSelector />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

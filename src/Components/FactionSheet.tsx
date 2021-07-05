@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Faction } from "../Models/Faction";
 import { getTechColor } from "../Models/Technology";
-import { SCREEN_WIDTH, SPACING } from "../spacing";
+import { SCREEN_WIDTH, SPACING } from "../../spacing";
 import { Influence, Resource } from "./PlanetValues";
 import { Section } from "./Section";
 import { SectionGroup } from "./SectionGroup";

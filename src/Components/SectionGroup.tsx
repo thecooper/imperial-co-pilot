@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRef } from "react";
 import { LayoutChangeEvent, View } from "react-native";
-import { SPACING } from "../spacing";
+import { SPACING } from "../../spacing";
 import { SectionHeader } from "./SectionHeader";
 
 export function SectionGroup({

@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { SPACING } from "../spacing";
+import { SPACING } from "../../spacing";
 import { SectionSubheader } from "./SectionSubheader";
 
 export function Section({
