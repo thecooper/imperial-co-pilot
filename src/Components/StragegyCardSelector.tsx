@@ -9,6 +9,8 @@ export function StrategyCardSelector() {
       items={STRATEGY_CARDS}
       keyExtractor={(item) => item.name}
       renderItem={({ item }) => <StrategyCard strategyCard={item} />}
+      selectText={strategyCard => `Select ${strategyCard.name}`}
+      onSelected={(strategyCard) => console.log(strategyCard.name)}
     />
   );
 }

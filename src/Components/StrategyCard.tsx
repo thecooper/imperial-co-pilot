@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ViewStyle, StyleProp } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SPACING } from "../../spacing";
 import { StrategyCardModel } from "../Models/StrategyCardModel";
@@ -13,8 +13,13 @@ export function StrategyCard({ strategyCard }: IStrategyCardProps) {
     wrapper: {
       backgroundColor: strategyCard.color,
       width: SCREEN_WIDTH,
-      height: SCREEN_HEIGHT,
+      height: "auto",
       padding: SPACING,
+      // borderColor: "red",
+      // borderWidth: 2
+    },
+    internalView: {
+      paddingBottom: SPACING * 6
     },
     cardWrapper: {
       backgroundColor: "#ffffff",
@@ -47,24 +52,31 @@ export function StrategyCard({ strategyCard }: IStrategyCardProps) {
   });
 
   return (
-    <ScrollView style={styles.wrapper}>
-      <View style={styles.cardWrapper}>
-        <Text style={styles.cardName}>{strategyCard.name}</Text>
-      </View>
-      <View style={styles.cardWrapper}>
-        <View>
-          <Text style={styles.subHeader}>Primary Ability</Text>
-          {strategyCard.primary.map((line) => (
-            <Text style={styles.abilityLine}>{line}</Text>
-          ))}
+    <ScrollView
+      style={styles.wrapper}
+      contentContainerStyle={{
+        // marginBottom: SPACING * 6,
+      }}
+    >
+      <View style={styles.internalView}>
+        <View style={styles.cardWrapper}>
+          <Text style={styles.cardName}>{strategyCard.name}</Text>
         </View>
-      </View>
-      <View style={styles.cardWrapper}>
-        <View>
-          <Text style={styles.subHeader}>Secondary Ability</Text>
-          {strategyCard.secondary.map((line) => (
-            <Text style={styles.abilityLine}>{line}</Text>
-          ))}
+        <View style={styles.cardWrapper}>
+          <View>
+            <Text style={styles.subHeader}>Primary Ability</Text>
+            {strategyCard.primary.map((line) => (
+              <Text style={styles.abilityLine}>{line}</Text>
+            ))}
+          </View>
+        </View>
+        <View style={styles.cardWrapper}>
+          <View>
+            <Text style={styles.subHeader}>Secondary Ability</Text>
+            {strategyCard.secondary.map((line) => (
+              <Text style={styles.abilityLine}>{line}</Text>
+            ))}
+          </View>
         </View>
       </View>
     </ScrollView>

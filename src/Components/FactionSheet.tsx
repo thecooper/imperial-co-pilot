@@ -115,7 +115,7 @@ export function FactionSheet({
   }
   
   return (
-    <View style={{ width: SCREEN_WIDTH, height: "auto" }}>
+    <View style={{ marginBottom: SPACING * 8 }}>
       <View>
         <View style={{
           paddingVertical: SPACING,

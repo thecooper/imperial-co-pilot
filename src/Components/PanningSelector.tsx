@@ -6,18 +6,23 @@ import {
   Pressable,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  StyleSheet,
+  ViewStyle,
+  StyleProp,
 } from "react-native";
-import { SCREEN_WIDTH, SPACING } from "../../spacing";
+import { SCREEN_HEIGHT, SCREEN_WIDTH, SPACING } from "../../spacing";
 
 export function PanningSelector<T>({
   items,
   selectText = "Select",
+  style,
   renderItem,
   keyExtractor,
   onSelected,
 }: {
   items: T[];
   selectText?: string | ((item: T) => string);
+  style?: StyleProp<ViewStyle>;
   renderItem: (value: { item: T; index: number }) => React.ReactElement | null;
   keyExtractor: (item: T) => string;
   onSelected?: (selectedItem: T) => void;
@@ -43,14 +48,26 @@ export function PanningSelector<T>({
   };
 
   const selectedItem =
-    itemIndex > 0 && itemIndex < items.length ? items[itemIndex] : null;
+    itemIndex >= 0 && itemIndex < items.length ? items[itemIndex] : null;
+
+  const styles = StyleSheet.create({
+    wrapper: {},
+    item: {
+      width: SCREEN_WIDTH,
+      height: "auto",
+    },
+  });
+
+  const itemStyles = StyleSheet.compose(styles.item as ViewStyle, style);
 
   return (
-    <View>
+    <View style={styles.wrapper}>
       <FlatList
         data={items}
         keyExtractor={keyExtractor}
-        renderItem={renderItem}
+        renderItem={(renderProps) => (
+          <View style={itemStyles}>{renderItem(renderProps)}</View>
+        )}
         horizontal
         showsHorizontalScrollIndicator={false}
         snapToInterval={SCREEN_WIDTH}
@@ -72,6 +89,16 @@ export function PanningSelector<T>({
               backgroundColor: "#2196f3",
               height: SPACING * 4,
               borderRadius: 4,
+              borderColor: "#55aef6",
+              borderWidth: 2,
+              shadowColor: "#000",
+              shadowOpacity: 0.3,
+              shadowOffset: {
+                height: 2,
+                width: 2,
+              },
+              shadowRadius: 2,
+              elevation: 3
             }}
             disabled={itemIndex === null}
             onPress={selectItem}
